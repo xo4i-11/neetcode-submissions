@@ -1,0 +1,183 @@
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+
+
+# ideas:
+#- since a permutation of s1 must have the same number of char as s1 => we gonna use FIXED-SIZE SLIDING WINDOW 
+#- we wanna check if the permutation of s1 is in s2 or not => we check by comparing the char occurance of s1 with the window in s2 => create 2 array to track the occrurance of s1 and s2 substring
+#- we gonna check the intial window (which is "lec" in the example) with s1 ("abc") first to see if they are valid or not 
+#- after that, we can create a sliding window with l=0 and r start at len(s1) [we have check the position of len(s1)-1] and end at the end of array
+
+#- since we are moving our window with FIXED SIZED => the left ptr will increase by 1 => occurance of the skipped char -=1 
+# - the right ptr increase by 1 => occurance of the new char +=1
+# after all, move the left ptpr by 1 to maintain the fixed size => l_ptr+=1
+
+        if len(s1)>len(s2): 
+            return False
+        
+        s1_count=[0]*26
+        s2_count=[0]*26
+
+        #check "abc" with "lec" (in "lecabee") (when l=0 and r=len(s1)-1=2)
+        for i in range(len(s1)):
+            s1_count[ord(s1[i])-ord("a")]+=1
+            s2_count[ord(s2[i])-ord("a")]+=1
+        
+        if s1_count==s2_count:
+            return True
+        
+        #check "abc" with "eca", "cab", "abe", "bee"
+        l=0
+        for r in range(len(s1),len(s2),1): #start with eca 
+            s2_count[ord(s2[r])-ord('a')]+=1 #move right ptr by 1 => r_ptr is at idx 3 (char "a") => add it to the occurance count
+            s2_count[ord(s2[l])-ord('a')]-=1 #move left ptr by 1 => l_ptr is at idx 1 (char "e") => remove the old char occurance in s2_count
+
+            if s2_count==s1_count:
+                return True
+            
+            l+=1
+        
+        return False
+
+
+
+
+
+#BAD APPROACHHHHHHH
+
+    #IDEAS:
+    #store the number of s1 in a list that have 26 smaller list to represent the number of occurance of each char in alphabet
+    # store the number of s2 in another list that haev 26 smaller list 
+    #use an val named matches to determine if 2 table matches or not (only compare n value at once (n respresent the len of s1))
+    #for example: s1="abc" s2="baxyzabc" 
+    #=> compare the occur list of"abc" with occur list of "bax"
+    # then shift left ptr by 1 and compare occur list of "abc" and "axy"
+
+    # matches if the number of occurance of 26 elements in the table are the same
+    #else: not matches, shift the left ptr 
+
+
+"""
+    def permutation_string(s1,s2):
+        if (len(s1)>len(s2)):
+            return False
+        
+        s1Count=[0]*26
+        s2Count=[0]*26
+
+        for i in range(len(s1)):
+            s1Count[ord(s1[i])-ord("a")]+=1
+            s2Count[ord(s2[i])-ord("a")]+=1
+        
+        matches=0
+        for i in range(26):
+            if(s1Count[i]== s2Count[i]):
+                matches+=1
+
+        l=0
+        for r in range(len(s1), len(s2)):
+            if matches==26:
+                return True
+            
+            index=ord(s2[r])- ord('a')
+            s2Count[index]+=1 #shift the right ptr
+            if s1Count[index]==s2Count[index]: #If it just became equal, we gain a match.
+                matches+=1
+            elif s1Count[index]+1== s2Count[index]:#If it was equal before but now not, we lose a match.
+                matches-=1
+
+#since we are adding to the right ptr => we need to remove the left ptr to keep the length of window =len(s1)
+            index=ord(s2[l])- ord('a')
+            s2Count[index]-=1 #remove the left ptr
+            if s1Count[index]==s2Count[index]: 
+                matches+=1
+            elif s1Count[index]-1== s2Count[index]: 
+                matches-=1
+            l+=1
+
+        return matches==26
+            
+"""
+
+
+
+
+
+
+
+
+"""
+technique: fixed-size sliding window
+
+if len(s2)<len(s1): => false
+
+we gona create 2 array to track the occurance of character inside s1 and s2
+we gonna compare it first, if it is correct => true
+
+we set the l=0, r=len(s1)-1
+we keep tracking the occurance of char
+if nothing happen, then move the left ptr by 1
+"""
+
+def permutation_in_string(s1,s2):
+    if len(s2)<len(s1):
+        return False
+
+    count_1=[0]*26
+    count_2=[0]*26
+
+    for i in range (len(s1)):
+        count_1[ord(s1[i])-ord('a')]+=1
+        count_2[ord(s2[i])-ord('a')]+=1
+    
+    if count_1 == count_2:
+        return True
+
+    l=0
+    
+    for r in range(len(s1),len(s2)):
+        count_2[ord(s2[r])-ord('a')]+=1
+        count_2[ord(s2[l])-ord('a')]-=1
+
+        if count_1==count_2:
+            return True
+        l+=1
+    
+    return False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
