@@ -1,0 +1,177 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        res = []
+
+        part = []
+
+        def dfs(i):
+            #base case: if i out of bound => reach leaf => return 
+            if i == len(s):
+                res.append(part.copy())
+                return 
+            
+            for j in range(i, len(s)):
+                if self.isPalin(s,i,j):
+                    part.append(s[i:j+1])
+                    dfs(j+1)
+
+                    part.pop()
+        
+        dfs(0)
+        return res
+
+    def isPalin(self,s,l,r):
+        while l<r:
+            if s[l] != s[r]:
+                return False
+            
+            l+=1
+            r-=1
+        
+        return True
+
+                
+
+
+
+
+"""
+idea: BACKTRACKING 
+
+        aab
+        /|\
+       a aa aab
+       /\  \
+      a  ab  b
+     /
+    b 
+
+
+from a in i=0, we can choose:  + a (valid), aa (valid), aab (invalid -> stop exploring)
+from a in i=1, we can choose:  + a (valid), ab(invalid -> stop exploring)
+from 
+"""
+
+
+
+
+
+
+
+
+
+"""
+idea:
+    aab => 3 cases to cut: + a|ab   -- a|a|b --- a|a|b|
+                           + aa|b   -- aa|b|  
+                           + aab|   -- invalid
+
+
+
+
+
+
+
+"""
+
+
+
+
+
+def palindrome_partitioning(s):
+    res = []
+
+    subset = []
+
+    def dfs(s, i):
+        #base case: stop when reaching leaf
+        if i == len(s):
+            res.append(subset.copy())
+            return 
+        
+        for j in range(i, len(s)):
+            if is_palindrome(s,i,j):
+                subset.append(s[i:j+1])
+                dfs(s,j+1)
+
+                subset.pop()
+
+    dfs(s,0)
+    return res
+
+
+
+
+def is_palindrome(s,l,r):
+
+    while l<r:
+        if s[l] != s[r]:
+            return False
+        
+        l+=1
+        r-=1
+    
+    return True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
